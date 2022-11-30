@@ -1,17 +1,3 @@
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({ position, delay });
-      } else {
-        reject({ position, delay });
-      }
-    }, delay);
-  });
-}
-
 const refs = {
   form: document.querySelector('.form'),
 };
@@ -24,6 +10,7 @@ function buttonSubmit(event) {
   const firstDelay = Number(event.currentTarget.delay.value);
   const step = Number(event.currentTarget.step.value);
   const amount = Number(event.currentTarget.amount.value);
+
   for (let i = 0; i <= amount; i += 1) {
     const delay = firstDelay + step * [i];
 
@@ -36,6 +23,20 @@ function buttonSubmit(event) {
       });
   }
   event.currentTarget.reset();
+}
+
+function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
 }
 
 // Напиши скрипт, который при сабмите формы вызывает

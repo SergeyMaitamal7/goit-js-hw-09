@@ -22,30 +22,27 @@ const options = {
     if (selectedDates[0] - new Date() < 0) {
       window.alert('Please choose a date in the future');
     }
+  
     refs.button.disabled = false;
-    const handleClick = () => {
-      setInterval(() => {
-        const deltaMs = selectedDates[0].getTime() - new Date().getTime();
+    
+    setInterval(() => {
+      const deltaMs = selectedDates[0].getTime() - new Date().getTime();
+      refs.button.disabled = true;
+      
+      if (deltaMs > 0) {
+        const counter = convertMs(deltaMs);
 
-        if (deltaMs > 0) {
-          const counter = convertMs(deltaMs);
-
-          refs.daysEl.textContent =
-            counter.days < 10 ? `0${counter.days}` : `${counter.days}`;
-          refs.hoursEl.textContent =
-            counter.hours < 10 ? `0${counter.hours}` : `${counter.hours}`;
-          refs.minutesEl.textContent =
-            counter.minutes < 10 ? `0${counter.minutes}` : `${counter.minutes}`;
-          refs.secondsEl.textContent =
-            counter.seconds < 10 ? `0${counter.seconds}` : `${counter.seconds}`;
-        }
-
-        if (deltaMs <= 0) {
-          refs.button.disabled = true;
-        }
-      }, 1000);
-    };
-    refs.button.addEventListener('click', handleClick);
+        refs.daysEl.textContent =
+          counter.days < 10 ? `0${counter.days}` : `${counter.days}`;
+        refs.hoursEl.textContent =
+          counter.hours < 10 ? `0${counter.hours}` : `${counter.hours}`;
+        refs.minutesEl.textContent =
+          counter.minutes < 10 ? `0${counter.minutes}` : `${counter.minutes}`;
+        refs.secondsEl.textContent =
+          counter.seconds < 10 ? `0${counter.seconds}` : `${counter.seconds}`;
+      }
+    }, 1000);
+    refs.button.addEventListener('click', setInterval);
   },
 };
 
