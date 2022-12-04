@@ -11,7 +11,7 @@ function buttonSubmit(event) {
   const step = Number(event.currentTarget.step.value);
   const amount = Number(event.currentTarget.amount.value);
 
-  for (let i = 0; i <= amount; i += 1) {
+  for (let i = 1; i <= amount; i += 1) {
     const delay = firstDelay + step * [i];
 
     createPromise([i], delay)

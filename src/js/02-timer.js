@@ -11,6 +11,7 @@ const refs = {
   secondsEl: document.querySelector('span[data-seconds'),
 };
 
+let timerId = null;
 refs.button.setAttribute('disabled', true);
 
 const options = {
@@ -22,29 +23,34 @@ const options = {
     if (selectedDates[0] - new Date() < 0) {
       window.alert('Please choose a date in the future');
     }
-  
     refs.button.disabled = false;
-    
-    setInterval(() => {
-      const deltaMs = selectedDates[0].getTime() - new Date().getTime();
-      refs.button.disabled = true;
-      
-      if (deltaMs > 0) {
-        const counter = convertMs(deltaMs);
 
-        refs.daysEl.textContent =
-          counter.days < 10 ? `0${counter.days}` : `${counter.days}`;
-        refs.hoursEl.textContent =
-          counter.hours < 10 ? `0${counter.hours}` : `${counter.hours}`;
-        refs.minutesEl.textContent =
-          counter.minutes < 10 ? `0${counter.minutes}` : `${counter.minutes}`;
-        refs.secondsEl.textContent =
-          counter.seconds < 10 ? `0${counter.seconds}` : `${counter.seconds}`;
-      }
-    }, 1000);
-    refs.button.addEventListener('click', setInterval);
+    refs.button.addEventListener('click', () => {
+      timer(selectedDates);
+      refs.button.disabled = true;
+    });
   },
 };
+
+function timer(today) {
+  timerId = setInterval(() => {
+    console.log('hello');
+    const deltaMs = today[0].getTime() - new Date().getTime();
+    if (deltaMs > 0) {
+      addLeadingZero(deltaMs);
+    } else {
+      clearInterval(timerId);
+    }
+  }, 1000);
+}
+
+function addLeadingZero(value) {
+  const time = convertMs(value);
+  refs.daysEl.textContent = time.days.toString().padStart(2, '0');
+  refs.hoursEl.textContent = time.hours.toString().padStart(2, '0');
+  refs.minutesEl.textContent = time.minutes.toString().padStart(2, '0');
+  refs.secondsEl.textContent = time.seconds.toString().padStart(2, '0');
+}
 
 flatpickr(refs.input, options);
 
